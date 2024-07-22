@@ -95,7 +95,7 @@ export interface PokeInfo extends BaseResponse {
   evolves_from_species: NameAndAPI;
   evolution_chain: NameAndAPI;
   generation: NameAndAPI;
-  names: PokeName;
+  names: PokeName[];
   flavor_text_entries: FlavorTextEntries[];
   form_descriptions: FormDescription[];
   genera: Genera[];

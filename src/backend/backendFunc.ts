@@ -76,7 +76,7 @@ const BackendService = {
               }
             );
           } else {
-            res.evolutionStage = 1;
+            res.evolutionStage = 0;
             return res;
           }
         });
