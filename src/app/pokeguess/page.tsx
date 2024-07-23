@@ -88,7 +88,7 @@ export default function PokeGuess() {
 
   return (
     <div className="grid grid-cols-12 pt-20">
-      {!showResult ? (
+      {showResult ? (
         <Card>
           <div className="flex justify-between items-center mb-8">
             <div className="font-semibold text-3xl">
@@ -332,7 +332,7 @@ export default function PokeGuess() {
                     ) : (
                       <div>
                         {pokemon?.evolutionStage === 0
-                          ? "Unique Evolution"
+                          ? "Has No Evoulution"
                           : pokemon?.evolutionStage === 1
                           ? "First Evolution"
                           : pokemon?.evolutionStage === 2
