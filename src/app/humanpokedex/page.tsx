@@ -388,7 +388,6 @@ export default function HumanPokedex() {
                       <option value={"generation-vii"}>Generation VII</option>
                       <option value={"generation-viii"}>Generation VIII</option>
                       <option value={"generation-ix"}>Generation IX</option>
-                      <option value={"generation-x"}>Generation X</option>
                     </select>
                   </div>
                   <div className="mb-4 h-[52px]">

@@ -1,7 +1,11 @@
+import { type } from "os";
 import {
   BaseResponse,
   ChainEvolutionInfo,
+  GetGenerationsInfoResponse,
   GetPokemonInfoResponse,
+  GetSomePokemonResponse,
+  GetTypesInfoResponse,
   PokeInfo,
 } from "./backendTypes";
 
@@ -84,6 +88,35 @@ const BackendService = {
         return res;
       }
     });
+
+    return a;
+  },
+
+  async getSomePokemon(
+    limit: number,
+    offset: number
+  ): Promise<GetSomePokemonResponse> {
+    const a = await authHttpCall(
+      `https://pokeapi.co/api/v2/pokemon-species?offset=${offset}&limit=${limit}`,
+      "GET"
+    );
+    return a;
+  },
+
+  async getTypesInfo(type: number): Promise<GetTypesInfoResponse> {
+    const a = await authHttpCall(
+      `https://pokeapi.co/api/v2/type/${type}`,
+      "GET"
+    );
+
+    return a;
+  },
+
+  async getGenerationsInfo(gen: number): Promise<GetGenerationsInfoResponse> {
+    const a = await authHttpCall(
+      `https://pokeapi.co/api/v2/generation/${gen}`,
+      "GET"
+    );
 
     return a;
   },

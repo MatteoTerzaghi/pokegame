@@ -77,6 +77,11 @@ export interface Type {
   type: NameAndAPI;
 }
 
+export interface Pokemon {
+  slot: number;
+  pokemon: NameAndAPI;
+}
+
 export interface PokeInfo extends BaseResponse {
   id: number;
   name: string;
@@ -156,4 +161,24 @@ export interface ChainEvolutionInfo {
   id: number;
 }
 
+export interface TypesInfo extends BaseResponse {
+  id: number;
+  name: string;
+  pokemon: Pokemon[];
+}
+
+export interface GenerationsInfo extends BaseResponse {
+  id: number;
+  name: string;
+  pokemon_species: NameAndAPI[];
+}
+
+export interface SomePokemon extends BaseResponse {
+  count: number;
+  results: NameAndAPI[];
+}
+
+export type GetTypesInfoResponse = TypesInfo;
+export type GetGenerationsInfoResponse = GenerationsInfo;
 export type GetPokemonInfoResponse = PokeInfo;
+export type GetSomePokemonResponse = SomePokemon;
