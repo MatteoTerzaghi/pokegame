@@ -94,6 +94,12 @@ export default function PokeName() {
         (pokemons) => {
           changeAllGuessablePokemon(
             pokemons.results.map((pokemon) => {
+              if (pokemon.name === "minior-red-meteor") {
+                pokemon.name = "minior";
+              } else if (pokemon.name === "mimikyu-disguised") {
+                pokemon.name = "mimikyu";
+              }
+
               return { name: pokemon.name, id: pokemon.url.split("/")[6] };
             })
           );
@@ -112,6 +118,12 @@ export default function PokeName() {
 
             typeResponses.forEach((response) => {
               response.pokemon.forEach((pokemon) => {
+                if (pokemon.pokemon.name === "minior-red-meteor") {
+                  pokemon.pokemon.name = "minior";
+                } else if (pokemon.pokemon.name === "mimikyu-disguised") {
+                  pokemon.pokemon.name = "mimikyu";
+                }
+
                 allTypesPokemons.push({
                   name: pokemon.pokemon.name,
                   id: pokemon.pokemon.url.split("/")[6],
@@ -128,6 +140,12 @@ export default function PokeName() {
 
             genResponses.forEach((response) => {
               response.pokemon_species.forEach((pokemon) => {
+                if (pokemon.name === "minior-red-meteor") {
+                  pokemon.name = "minior";
+                } else if (pokemon.name === "mimikyu-disguised") {
+                  pokemon.name = "mimikyu";
+                }
+
                 allGensPokemons.push({
                   name: pokemon.name,
                   id: pokemon.url.split("/")[6],

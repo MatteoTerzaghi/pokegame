@@ -33,6 +33,12 @@ export default function Home() {
             desc="How many pokemon can you name in a few minutes"
             redirect="pokename"
           />
+
+          <Pokeball
+            title="PokeDex"
+            desc="Search pokemon to learn more"
+            redirect="pokedex"
+          />
         </div>
       </Card>
     </main>

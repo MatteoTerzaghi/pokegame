@@ -25,6 +25,12 @@ export default function WhoIsThatPokemon() {
     changeNameGuessed("");
     const pokeNumber = Math.ceil(Math.random() * howManyPokemon) ?? 1;
     BackendService.getPokemonInfo(pokeNumber).then((pokemon) => {
+      if (pokemon.name === "minior-red-meteor") {
+        pokemon.name = "minior";
+      } else if (pokemon.name === "mimikyu-disguised") {
+        pokemon.name = "mimikyu";
+      }
+
       if (pokemon?.id) {
         changePokemon(pokemon);
       }
