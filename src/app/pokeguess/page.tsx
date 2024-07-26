@@ -344,7 +344,7 @@ export default function PokeGuess() {
                           ? "First Evolution"
                           : pokemon?.evolutionStage === 2
                           ? "Second Evolution"
-                          : pokemon?.evolutionStage === 0
+                          : pokemon?.evolutionStage === 3
                           ? "Third Evolution"
                           : "Error"}
                       </div>
