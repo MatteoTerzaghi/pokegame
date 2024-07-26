@@ -85,6 +85,7 @@ export default function PokeGuess() {
 
     changeShowNextBtn(true);
 
+    changePokeGuess("");
     unlockImg(true);
     unlockTypes(true);
     unlockGen(true);
@@ -132,7 +133,7 @@ export default function PokeGuess() {
             PokeGuess is a game in which you start with 1000 points and the
             description of the mysterious pokemon and <b>ONLY ONE</b> guess.
             (Don&apos;t worry the guess is NOT case sensitive, but the name must
-            be written rightfully)
+            be right)
             <br />
             <br />
             Don&apos;t worry you can buy more hints by clicking on the black box
