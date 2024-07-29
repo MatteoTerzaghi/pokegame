@@ -135,7 +135,24 @@ export default function HumanPokedex() {
             <br />
             Enjoy!
           </div>
-          <div className="flex justify-between items-center mt-4 mb-12">
+          <div className="md:hidden mt-4 mb-12">
+            <div className="text-end">
+              <span className="me-4">
+                Turn {howManyGuessesAlready}/{howManyRound}
+              </span>
+              Score: {score}
+            </div>
+
+            <div className="me-4">How much do you know about:</div>
+
+            <span className="capitalize font-bold text-2xl">
+              {pokemon?.names
+                .find((name) => name.language.name === "en")
+                ?.name.replaceAll("-", "")}
+            </span>
+          </div>
+
+          <div className="md:flex md:justify-between md:items-center md:mt-4 md:mb-12 hidden">
             <div className="flex justify-start align-middle items-center">
               <span className="me-4">
                 How much do you know about:{" "}
@@ -158,7 +175,7 @@ export default function HumanPokedex() {
           <div>
             {!loading ? (
               <div className="grid grid-cols-12">
-                <div className="col-span-8 pb-6 px-6">
+                <div className="sm:col-span-8 col-span-12 pb-6 md:px-6">
                   <div className="mb-4 h-[88px]">
                     <span className="font-bold text-lg">
                       Types (200 points)
@@ -417,7 +434,7 @@ export default function HumanPokedex() {
                       <option value={3}>Third Evolution</option>
                     </select>
                   </div>
-                  <div className="mb-4 h-[52px]">
+                  <div className="mb-4 lg:h-[52px] md:h-[96px] sm:h-[116px] h-[68px]">
                     <span className="font-bold text-lg">
                       National Pokedex Number (400 points)
                     </span>
@@ -445,8 +462,8 @@ export default function HumanPokedex() {
                   </div>
                 </div>
                 {showAnswers && (
-                  <div className="col-span-4">
-                    <div className="mb-4 h-[88px]">
+                  <div className="sm:col-span-4 col-span-12">
+                    <div className="mb-4 sm:h-[88px] h-auto">
                       <span className="font-bold text-lg">
                         {(pokemon?.types.length === 2 &&
                           pokemon.types
@@ -460,9 +477,14 @@ export default function HumanPokedex() {
                           pokemon.types
                             .map((type) => type.type.name)
                             .includes(typeOne)) ? (
-                          <span className="text-green-600">Correct!</span>
+                          <span className="text-green-600">
+                            <span className="sm:hidden">Types &nbsp;</span>
+                            Correct!
+                          </span>
                         ) : (
-                          <span className="text-red-600"> Wrong</span>
+                          <span className="text-red-600">
+                            <span className="sm:hidden">Types &nbsp;</span>Wrong
+                          </span>
                         )}
                       </span>
                       <div>
@@ -494,12 +516,17 @@ export default function HumanPokedex() {
                         )}
                       </div>
                     </div>
-                    <div className="mb-4 h-[52px]">
+                    <div className="mb-4 sm:h-[52px] h-auto">
                       <span className="font-bold text-lg">
                         {gen === pokemon?.generation.name ? (
-                          <span className="text-green-600">Correct!</span>
+                          <span className="text-green-600">
+                            <span className="sm:hidden">Types &nbsp;</span>
+                            Correct!
+                          </span>
                         ) : (
-                          <span className="text-red-600"> Wrong</span>
+                          <span className="text-red-600">
+                            <span className="sm:hidden">Types &nbsp;</span>Wrong
+                          </span>
                         )}
                       </span>
                       <div>
@@ -512,12 +539,17 @@ export default function HumanPokedex() {
                         </span>
                       </div>
                     </div>
-                    <div className="mb-4 h-[52px]">
+                    <div className="mb-4 sm:h-[52px] h-auto">
                       <span className="font-bold text-lg">
                         {evolutionStage === pokemon?.evolutionStage ? (
-                          <span className="text-green-600">Correct!</span>
+                          <span className="text-green-600">
+                            <span className="sm:hidden">Types &nbsp;</span>
+                            Correct!
+                          </span>
                         ) : (
-                          <span className="text-red-600"> Wrong</span>
+                          <span className="text-red-600">
+                            <span className="sm:hidden">Types &nbsp;</span>Wrong
+                          </span>
                         )}
                       </span>
 
@@ -533,15 +565,20 @@ export default function HumanPokedex() {
                           : "Error"}
                       </div>
                     </div>
-                    <div className="mb-4 h-[52px]">
+                    <div className="mb-4 sm:h-[52px] h-auto">
                       <span className="font-bold text-lg">
                         {nationalPokedexNumber ===
                         pokemon?.pokedex_numbers.find(
                           (pokedex) => pokedex.pokedex.name === "national"
                         )?.entry_number ? (
-                          <span className="text-green-600">Correct!</span>
+                          <span className="text-green-600">
+                            <span className="sm:hidden">Types &nbsp;</span>
+                            Correct!
+                          </span>
                         ) : (
-                          <span className="text-red-600"> Wrong</span>
+                          <span className="text-red-600">
+                            <span className="sm:hidden">Types &nbsp;</span>Wrong
+                          </span>
                         )}
                       </span>
 
