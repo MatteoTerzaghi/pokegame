@@ -225,10 +225,10 @@ export default function PokeName() {
 
         {!timerStarted && (
           <div className="grid grid-cols-12">
-            <div className="col-span-5 grid grid-cols-5">
-              <div className="col-span-2">
+            <div className="xl:grid-cols-5 lg:grid-cols-6 sm:col-span-5 col-span-6 grid self-baseline">
+              <div className="xl:col-span-2 lg:col-span-3 col-full">
                 Types
-                <div>
+                <div className="mb-4">
                   <button
                     className="rounded bg-gray-200 px-3 py-1 mt-2 me-2 text-sm"
                     onClick={() => changeTypes(allTypes)}
@@ -251,7 +251,7 @@ export default function PokeName() {
                   </button>
                 </div>
               </div>
-              <div className="col-span-3 px-2">
+              <div className="lg:col-span-3 col-full px-2">
                 <div>
                   <div>
                     <input
@@ -634,10 +634,10 @@ export default function PokeName() {
                 </div>
               </div>
             </div>
-            <div className="col-span-5 grid grid-cols-5">
-              <div className="col-span-2">
+            <div className="xl:grid-cols-5 lg:grid-cols-6 xl:col-span-4 sm:col-span-5 col-span-6 grid self-baseline">
+              <div className="xl:col-span-2 lg:col-span-3 col-full">
                 Generations
-                <div>
+                <div className="mb-4">
                   <button
                     className="rounded bg-gray-200 px-3 py-1 mt-2 me-2 text-sm"
                     onClick={() => changeGens(allGens)}
@@ -658,8 +658,8 @@ export default function PokeName() {
                   </button>
                 </div>
               </div>
-              <div className="col-span-3 px-2">
-                <div>
+              <div className="lg:col-span-3 col-full px-2">
+                <div className="mb-4">
                   <div>
                     <input
                       type="checkbox"
@@ -850,9 +850,38 @@ export default function PokeName() {
                     <label htmlFor="generation-ix">Generation IX</label>
                   </div>
                 </div>
+
+                <div className="sm:hidden">
+                  <div className="mb-4">
+                    <div>Seconds</div>
+                    <input
+                      className="max-w-[60px] border p-1 rounded"
+                      type="number"
+                      onChange={(e) =>
+                        changeSeconds(Math.ceil(+e.target.value))
+                      }
+                      value={seconds}
+                    />
+                  </div>
+                  <button
+                    className="rounded bg-gray-200 px-3 py-1"
+                    onClick={() => {
+                      if (
+                        gens.length > 0 &&
+                        types.length > 0 &&
+                        !isNaN(seconds) &&
+                        seconds > 0
+                      ) {
+                        startTimer();
+                      }
+                    }}
+                  >
+                    START!
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="col-span-1">
+            <div className="col-span-1 xl:col-start-11 col-start-10 xl:block hidden">
               <div>Seconds</div>
               <input
                 className="max-w-[60px] border p-1 rounded"
@@ -861,7 +890,33 @@ export default function PokeName() {
                 value={seconds}
               />
             </div>
-            <div className="col-span-1">
+            <div className="xl:col-span-1 col-span-2 text-center xl:block hidden">
+              <button
+                className="rounded bg-gray-200 px-3 py-1"
+                onClick={() => {
+                  if (
+                    gens.length > 0 &&
+                    types.length > 0 &&
+                    !isNaN(seconds) &&
+                    seconds > 0
+                  ) {
+                    startTimer();
+                  }
+                }}
+              >
+                START!
+              </button>
+            </div>
+            <div className="col-span-2 text-center xl:hidden sm:block hidden">
+              <div className="mb-4">
+                <div>Seconds</div>
+                <input
+                  className="max-w-[60px] border p-1 rounded"
+                  type="number"
+                  onChange={(e) => changeSeconds(Math.ceil(+e.target.value))}
+                  value={seconds}
+                />
+              </div>
               <button
                 className="rounded bg-gray-200 px-3 py-1"
                 onClick={() => {
@@ -884,109 +939,147 @@ export default function PokeName() {
         <div>
           {!loading && timerStarted ? (
             <div>
-              <div className="m-2 flex items-center justify-between">
-                <div className="flex items-center">
-                  <span>
-                    {!timerEnded ? (
-                      <div>
-                        <div className="flex items-center">
-                          <div className="me-2">
-                            There are {allGuessablePokemon.length} possible
-                            pokemon:
-                          </div>
-                          <input
-                            placeholder="Guess a pokemon"
-                            className="outline-none me-2"
-                            autoFocus
-                            id="guessPokemonInput"
-                          />
-                          <button
-                            className="rounded bg-gray-200 px-3 py-1"
-                            onClick={() => {
-                              const newGuessedPokemon = [...guessedPokemon];
-
-                              const inputGuessValue = document.getElementById(
-                                "guessPokemonInput"
-                              ) as any;
-
-                              newGuessedPokemon.push(
-                                inputGuessValue.value
-                                  .replaceAll(" ", "-")
-                                  .toLowerCase()
-                              );
-                              inputGuessValue.value = "";
-                              inputGuessValue.focus();
-
-                              changeGuessedPokemon(newGuessedPokemon);
-                            }}
-                          >
-                            Guess
-                          </button>
-                        </div>
-                        <div className="capitalize">
-                          <span className="font-bold text-lg">Type</span>:{" "}
-                          {types.length === howManyTypes
-                            ? "All"
-                            : types
-                                .sort(
-                                  (a, b) => (a.name as any) - (b.name as any)
-                                )
-                                .map((t) => t.name)
-                                .join(", ")}
-                        </div>
-                        <div className="capitalize">
-                          <span className="font-bold text-lg">Generation</span>:{" "}
-                          {gens.length === howManyGen
-                            ? "All"
-                            : gens
-                                .sort((a, b) => a.id - b.id)
-                                .map((g) => g.name)
-                                .join(", ")}
-                        </div>
-                      </div>
-                    ) : (
-                      <div>
-                        <div>
-                          <span>
-                            You guessed{" "}
-                            {
-                              guessedPokemon.filter((pokemon) =>
-                                allGuessablePokemon
-                                  .map((guesspok) => guesspok.name)
-                                  .includes(pokemon)
-                              ).length
-                            }{" "}
-                            out of {allGuessablePokemon.length} possible
-                          </span>
-                          <button
-                            className="rounded bg-gray-200 px-3 py-1 ms-2"
-                            onClick={() => {
-                              changeSeconds(lastseconds);
-                              changeGuessedPokemon([]);
-                              changeAllGuessablePokemon([]);
-                              changeTimerEnded(false);
-                              changeTimerStarted(false);
-                            }}
-                          >
-                            Retry
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </span>
-                </div>
-
+              {!timerEnded ? (
                 <div>
-                  {Math.floor(seconds / 60)} :{" "}
-                  {seconds - Math.floor(seconds / 60) * 60 < 10
-                    ? `0${seconds - Math.floor(seconds / 60) * 60}`
-                    : seconds - Math.floor(seconds / 60) * 60}
+                  <div className="lg:flex items-center hidden">
+                    <div className="me-2">
+                      There are {allGuessablePokemon.length} possible pokemon:
+                    </div>
+                    <input
+                      placeholder="Guess a pokemon"
+                      className="outline-none me-2"
+                      autoFocus
+                      id="guessPokemonInput"
+                    />
+                    <button
+                      className="rounded bg-gray-200 px-3 py-1"
+                      onClick={() => {
+                        const newGuessedPokemon = [...guessedPokemon];
+
+                        const inputGuessValue = document.getElementById(
+                          "guessPokemonInput"
+                        ) as any;
+
+                        newGuessedPokemon.push(
+                          inputGuessValue.value
+                            .replaceAll(" ", "-")
+                            .toLowerCase()
+                        );
+                        inputGuessValue.value = "";
+                        inputGuessValue.focus();
+
+                        changeGuessedPokemon(newGuessedPokemon);
+                      }}
+                    >
+                      Guess
+                    </button>
+                  </div>
+                  <div className="lg:hidden">
+                    <div className="me-2">
+                      There are {allGuessablePokemon.length} possible pokemon:
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <input
+                        placeholder="Guess a pokemon"
+                        className="outline-none me-2"
+                        autoFocus
+                        id="guessPokemonInputSmall"
+                      />
+                      <button
+                        className="rounded bg-gray-200 px-3 py-1"
+                        onClick={() => {
+                          const newGuessedPokemon = [...guessedPokemon];
+
+                          const inputGuessValue = document.getElementById(
+                            "guessPokemonInputSmall"
+                          ) as any;
+
+                          newGuessedPokemon.push(
+                            inputGuessValue.value
+                              .replaceAll(" ", "-")
+                              .toLowerCase()
+                          );
+                          inputGuessValue.value = "";
+                          inputGuessValue.focus();
+
+                          changeGuessedPokemon(newGuessedPokemon);
+                        }}
+                      >
+                        Guess
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="m-2 flex items-center justify-between">
+                    <div className="flex items-center max-w-[calc(100%-60px)]">
+                      <span>
+                        <div>
+                          <div className="capitalize">
+                            <span className="font-bold text-lg">Type</span>:{" "}
+                            {types.length === howManyTypes
+                              ? "All"
+                              : types
+                                  .sort(
+                                    (a, b) => (a.name as any) - (b.name as any)
+                                  )
+                                  .map((t) => t.name)
+                                  .join(", ")}
+                          </div>
+                          <div className="capitalize">
+                            <span className="font-bold text-lg">
+                              Generation
+                            </span>
+                            :{" "}
+                            {gens.length === howManyGen
+                              ? "All"
+                              : gens
+                                  .sort((a, b) => a.id - b.id)
+                                  .map((g) => g.name)
+                                  .join(", ")}
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+
+                    <div>
+                      {Math.floor(seconds / 60)} :{" "}
+                      {seconds - Math.floor(seconds / 60) * 60 < 10
+                        ? `0${seconds - Math.floor(seconds / 60) * 60}`
+                        : seconds - Math.floor(seconds / 60) * 60}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex justify-between items-center mb-4">
+                  <span>
+                    You guessed{" "}
+                    {
+                      guessedPokemon.filter((pokemon) =>
+                        allGuessablePokemon
+                          .map((guesspok) => guesspok.name)
+                          .includes(pokemon)
+                      ).length
+                    }{" "}
+                    out of {allGuessablePokemon.length} possible
+                  </span>
+                  <button
+                    className="rounded bg-gray-200 px-3 py-1 ms-2"
+                    onClick={() => {
+                      changeSeconds(lastseconds);
+                      changeGuessedPokemon([]);
+                      changeAllGuessablePokemon([]);
+                      changeTimerEnded(false);
+                      changeTimerStarted(false);
+                    }}
+                  >
+                    Retry
+                  </button>
+                </div>
+              )}
               <div className="grid grid-cols-12">
                 {allGuessablePokemon.map((pokemon) => (
                   <div
-                    className={`capitalize col-span-2 border p-2 m-2 ${
+                    className={`capitalize lg:col-span-2 col-span-4 border p-2 m-2 ${
                       guessedPokemon.includes(pokemon.name)
                         ? "bg-green-200 border-green-400 text-green-600 border-4"
                         : timerEnded
