@@ -104,12 +104,16 @@ export default function Pokedex() {
       );
     }
 
-    if (typeTwo) {
+    if (typeTwo && typeTwo !== "no_second_type") {
       newFilteredPokemon = newFilteredPokemon.filter((pokemon) =>
         pokemon.types.includes(typeTwo)
       );
+    } else if (typeTwo && typeTwo === "no_second_type") {
+      newFilteredPokemon = newFilteredPokemon.filter(
+        (pokemon) =>
+          pokemon.types.includes(typeOne) && pokemon.types.length === 1
+      );
     }
-
     if (gen > 0) {
       await BackendService.getGenerationsInfo(gen).then((gen) => {
         const genArr = gen.pokemon_species.map((p) => {
@@ -261,6 +265,7 @@ export default function Pokedex() {
                     onChange={(e) => changeTypeTwo(e.target.value)}
                   >
                     <option value={""}>Any Type</option>
+                    <option value={"no_second_type"}>Has Only One Type</option>
                     <option disabled={typeOne === "normal"} value={"normal"}>
                       Normal
                     </option>
@@ -322,7 +327,7 @@ export default function Pokedex() {
                       Fairy
                     </option>
                   </select>
-                  {typeTwo && (
+                  {typeTwo && typeTwo !== "no_second_type" && (
                     <div
                       className="w-[75px] h-[28.5px] relative mx-2"
                       key={typeTwo}
