@@ -941,6 +941,30 @@ export default function PokeName() {
             <div>
               {!timerEnded ? (
                 <div>
+                  {guessedPokemon.length > 0 && (
+                    <div
+                      className={`font-bold text-lg ${
+                        allGuessablePokemon
+                          .map((gp) => gp.name)
+                          .includes(guessedPokemon[guessedPokemon.length - 1])
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      <span className="capitalize">
+                        {guessedPokemon[guessedPokemon.length - 1].replaceAll(
+                          "-",
+                          " "
+                        )}{" "}
+                      </span>
+                      was{" "}
+                      {allGuessablePokemon
+                        .map((gp) => gp.name)
+                        .includes(guessedPokemon[guessedPokemon.length - 1])
+                        ? "found"
+                        : "not found"}
+                    </div>
+                  )}
                   <div className="lg:flex items-center hidden">
                     <div className="me-2">
                       There are {allGuessablePokemon.length} possible pokemon:
@@ -1009,7 +1033,6 @@ export default function PokeName() {
                       </button>
                     </div>
                   </div>
-
                   <div className="m-2 flex items-center justify-between">
                     <div className="flex items-center max-w-[calc(100%-60px)]">
                       <span>
