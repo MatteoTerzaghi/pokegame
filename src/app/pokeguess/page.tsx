@@ -144,12 +144,12 @@ export default function PokeGuess() {
             Enjoy!
           </div>
           <div
-            className={`flex justify-between items-center mt-4 ${
+            className={`lg:flex lg:justify-between lg:items-center mt-4 text-[13px] xl:text-base ${
               showBanner > 0 ? "mb-4" : "mb-12"
             }`}
           >
-            <div className="flex justify-start align-middle items-center">
-              <span className="me-4">The Mysterious Pokemon Name is: </span>
+            <div className="hidden md:flex lg:justify-start align-middle items-center md:justify-between">
+              <span className="me-4">The Mysterious Pokemon is: </span>
               <input
                 className="outline-none"
                 placeholder="Insert your answer"
@@ -181,7 +181,42 @@ export default function PokeGuess() {
               </button>
             </div>
 
-            <div>
+            <div className="md:hidden">
+              <div className="me-4">The Mysterious Pokemon is: </div>
+              <div className="flex items-center justify-between">
+                <input
+                  className="outline-none"
+                  placeholder="Insert your answer"
+                  onChange={(e) => changePokeGuess(e.target.value)}
+                  id="inputPokemonNameGuess"
+                ></input>
+                <button
+                  className="rounded bg-gray-200 px-3 py-1"
+                  onClick={() => guessPokemon()}
+                  disabled={showNextBtn || loading}
+                >
+                  {!showNextBtn ? (
+                    <span>
+                      Guess for{" "}
+                      {startingPoints -
+                        (unlockedImg ? 300 : 0) -
+                        (unlockedTypes ? 200 : 0) -
+                        (unlockedGen ? 100 : 0) -
+                        (unlockedEvStage ? 100 : 0) -
+                        (unlockedNatPokedex ? 100 : 0)}{" "}
+                      Points
+                    </span>
+                  ) : (
+                    <span>
+                      {showBanner === 1 && <span>Next Time</span>}
+                      {showBanner === 2 && <span>Congratulations!</span>}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex justify-end items-center mt-2 lg:mt-0">
               <span className="me-4">
                 Turn {howManyGuessesAlready}/{howManyRound}
               </span>
@@ -243,26 +278,25 @@ export default function PokeGuess() {
 
           <div>
             {!loading ? (
-              <div className="grid grid-cols-12">
-                <div className="col-span-4 min-h-[443px]">
+              <div className="flex flex-wrap lg:flex-nowrap">
+                <div className="sm:min-h-[450px] sm:min-w-[450px] min-h-[320px] min-w-[320px] px-6 mb-4 lg:p-0 lg:mb-0">
                   {!unlockedImg ? (
                     <button
-                      className="text-white w-full bg-black mb-4 h-[calc(100%-44px)] flex justify-center align-middle items-center"
+                      className="text-white w-full bg-black mb-4 sm:h-[406px] h-[276px] flex justify-center align-middle items-center"
                       onClick={() => unlockImg(true)}
                     >
                       -300 points
                     </button>
                   ) : (
-                    <div className="relative h-[calc(100%-44px)] mb-4">
+                    <div className="relative sm:h-[406px] sm:w-[406px] h-[276px] w-[276px] mb-4 mx-auto">
                       <Image
                         src={pokemon?.pokeImg ?? ""}
                         alt={`${pokemon?.name} image`}
                         fill
-                        sizes="height: calc(100%-44px)"
                       />
                     </div>
                   )}
-                  <div className="flex items-center">
+                  <div className="flex items-center h-[28.5px]">
                     <span className="font-bold text-lg me-2">Types</span>
                     {!unlockedTypes ? (
                       <button
@@ -294,7 +328,7 @@ export default function PokeGuess() {
                     )}
                   </div>
                 </div>
-                <div className="col-span-8 pb-6 px-6">
+                <div className="pb-6 px-6">
                   <div className="mb-4">
                     <span className="font-bold text-lg">Description</span>
                     <div className="w-full">
