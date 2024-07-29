@@ -109,14 +109,13 @@ export default function WhoIsThatPokemon() {
                       onChange={(e) => changeNameGuessed(e.target.value)}
                     ></input>
                     {showNextBtn ? (
-                      <div>
-                        <button
-                          className="rounded bg-gray-200 px-3 py-1 me-2"
-                          onClick={() => getRandomPokemon()}
-                        >
-                          Next
-                        </button>
-                      </div>
+                      <button
+                        className="rounded bg-gray-200 px-3 py-1 me-2"
+                        onClick={() => getRandomPokemon()}
+                        autoFocus
+                      >
+                        Next
+                      </button>
                     ) : (
                       <div>
                         <button
