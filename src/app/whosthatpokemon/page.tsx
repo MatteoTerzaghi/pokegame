@@ -16,6 +16,9 @@ export default function WhoIsThatPokemon() {
   const [pokemon, changePokemon] = useState<PokeInfo | undefined>(undefined);
   const [nameGuessed, changeNameGuessed] = useState("");
 
+  const [bestStreak, changeBestStreak] = useState(0);
+  const [currentStreak, changeCurrentStreak] = useState(0);
+
   const [loading, changeLoading] = useState(true);
   const [showNextBtn, changeShowNextBtn] = useState(false);
 
@@ -66,6 +69,10 @@ export default function WhoIsThatPokemon() {
         <div>
           {!loading ? (
             <div>
+              <div className="flex justify-center items-center">
+                <div className="mx-4">Current Streak: {currentStreak}</div>
+                <div className="mx-4">Best Streak: {bestStreak}</div>
+              </div>
               <div className="flex justify-center items-center">
                 <div className="relative h-[420px] w-[420px]">
                   <Image
@@ -120,13 +127,30 @@ export default function WhoIsThatPokemon() {
                       <div>
                         <button
                           className="rounded bg-gray-200 px-3 py-1 me-2"
-                          onClick={() => changeShowNextBtn(true)}
+                          onClick={() => {
+                            if (
+                              nameGuessed.toLowerCase() ===
+                              pokemon?.name.replaceAll("-", " ").toLowerCase()
+                            ) {
+                              const newCurrentStreak = currentStreak + 1;
+                              changeCurrentStreak(newCurrentStreak);
+                              if (newCurrentStreak > bestStreak) {
+                                changeBestStreak(newCurrentStreak);
+                              }
+                            } else {
+                              changeCurrentStreak(0);
+                            }
+                            changeShowNextBtn(true);
+                          }}
                         >
                           Guess
                         </button>
                         <button
                           className="rounded bg-gray-200 px-3 py-1"
-                          onClick={() => changeShowNextBtn(true)}
+                          onClick={() => {
+                            changeCurrentStreak(0);
+                            changeShowNextBtn(true);
+                          }}
                         >
                           Skip
                         </button>
