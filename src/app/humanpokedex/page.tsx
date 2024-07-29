@@ -21,6 +21,7 @@ export default function HumanPokedex() {
   const [gen, changeGen] = useState("");
   const [evolutionStage, changeEvStage] = useState(-1);
   const [nationalPokedexNumber, changeNatPokedex] = useState(0);
+  const [nationalPokedexNumberPoints, changeNatPokedexPoints] = useState(0);
   const [loading, changeLoading] = useState(true);
 
   const [howManyGuessesAlready, changeHowManyGuessesAlready] = useState(0);
@@ -75,14 +76,24 @@ export default function HumanPokedex() {
       for_how_many_points += arrTypesName.includes(typeOne) ? 200 : 0;
     }
 
+    const pokeNumber =
+      pokemon?.pokedex_numbers.find(
+        (pokedex) => pokedex.pokedex.name === "national"
+      )?.entry_number ?? 0;
+
+    const errorPerc = Math.floor(
+      Math.abs(nationalPokedexNumber - pokeNumber) / 100
+    );
+
     for_how_many_points +=
       (pokemon?.generation.name === gen ? 300 : 0) +
-      (pokemon?.evolutionStage === evolutionStage ? 100 : 0) +
-      (pokemon?.pokedex_numbers.find(
-        (pokedex) => pokedex.pokedex.name === "national"
-      )?.entry_number === nationalPokedexNumber
-        ? 400
-        : 0);
+        (pokemon?.evolutionStage === evolutionStage ? 100 : 0) +
+        pokeNumber ===
+      nationalPokedexNumber
+        ? 500
+        : errorPerc >= 0 && errorPerc < 5
+        ? 400 - 100 * errorPerc
+        : 0;
 
     changeScore(score + for_how_many_points);
 
@@ -436,7 +447,7 @@ export default function HumanPokedex() {
                   </div>
                   <div className="mb-4 lg:h-[52px] md:h-[96px] sm:h-[116px] h-[68px]">
                     <span className="font-bold text-lg">
-                      National Pokedex Number (400 points)
+                      National Pokedex Number (500 points)
                     </span>
 
                     <div className="flex items-center">
@@ -577,7 +588,8 @@ export default function HumanPokedex() {
                           </span>
                         ) : (
                           <span className="text-red-600">
-                            <span className="sm:hidden">Types &nbsp;</span>Wrong
+                            <span className="sm:hidden">Types &nbsp;</span>Wrong{" "}
+                            {nationalPokedexNumberPoints} Points
                           </span>
                         )}
                       </span>
