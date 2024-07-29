@@ -145,7 +145,7 @@ export default function Pokedex() {
         {!loading ? (
           <div>
             <div className="my-10 grid grid-cols-12">
-              <div className="xl:col-span-3 col-span-full mb-4">
+              <div className="col-span-full mb-4">
                 <div className="font-semibold text-lg">Filter by name</div>
                 <input
                   className="w-[210px] outline-none"
@@ -159,7 +159,7 @@ export default function Pokedex() {
                   }}
                 />
               </div>
-              <div className="xl:col-span-3 col-span-full mb-4">
+              <div className="col-span-full mb-4">
                 <div className="font-semibold text-lg">Filter by types</div>
                 <div className="flex">
                   <select
@@ -337,7 +337,7 @@ export default function Pokedex() {
                   )}
                 </div>
               </div>
-              <div className="xl:col-span-2 col-span-full mb-4">
+              <div className="col-span-full mb-4">
                 <div className="font-semibold text-lg">
                   Filter by generation
                 </div>
@@ -361,7 +361,7 @@ export default function Pokedex() {
                 </select>
               </div>
 
-              <div className="xl:col-span-2 col-span-full xl:col-start-11 flex justify-center items-center">
+              <div className="col-span-full flex justify-center items-center">
                 <button
                   className="rounded bg-gray-200 px-3 py-1 me-2"
                   onClick={() => {
