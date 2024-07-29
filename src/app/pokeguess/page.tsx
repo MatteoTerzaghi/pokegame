@@ -36,6 +36,7 @@ export default function PokeGuess() {
     changeLoading(true);
     changeShowBanner(0);
     changeShowNextBtn(false);
+    changePokeGuess("");
     unlockImg(false);
     unlockTypes(false);
     unlockGen(false);
@@ -85,7 +86,6 @@ export default function PokeGuess() {
 
     changeShowNextBtn(true);
 
-    changePokeGuess("");
     unlockImg(true);
     unlockTypes(true);
     unlockGen(true);
@@ -112,6 +112,7 @@ export default function PokeGuess() {
             className="rounded bg-gray-200 px-3 py-1 mt-2"
             onClick={() => {
               changeHowManyGuessesAlready(1);
+              changeScore(0);
               changeShowResult(false);
             }}
           >

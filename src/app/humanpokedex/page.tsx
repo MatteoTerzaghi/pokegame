@@ -37,6 +37,7 @@ export default function HumanPokedex() {
     changeLoading(true);
     changeShowNextBtn(false);
     changeShowAnsewrs(false);
+    changeNatPokedexPoints(0);
     changeTypeOne("");
     changeTypeTwo("");
     changeGen("");
@@ -85,15 +86,19 @@ export default function HumanPokedex() {
       Math.abs(nationalPokedexNumber - pokeNumber) / 100
     );
 
-    for_how_many_points +=
-      (pokemon?.generation.name === gen ? 300 : 0) +
-        (pokemon?.evolutionStage === evolutionStage ? 100 : 0) +
-        pokeNumber ===
-      nationalPokedexNumber
+    const natPokedexPoints =
+      pokeNumber === nationalPokedexNumber
         ? 500
         : errorPerc >= 0 && errorPerc < 5
         ? 400 - 100 * errorPerc
         : 0;
+
+    for_how_many_points +=
+      (pokemon?.generation.name === gen ? 300 : 0) +
+      (pokemon?.evolutionStage === evolutionStage ? 100 : 0) +
+      natPokedexPoints;
+
+    changeNatPokedexPoints(natPokedexPoints);
 
     changeScore(score + for_how_many_points);
 
@@ -121,6 +126,7 @@ export default function HumanPokedex() {
             className="rounded bg-gray-200 px-3 py-1 mt-2"
             onClick={() => {
               changeHowManyGuessesAlready(1);
+              changeScore(0);
               changeShowResult(false);
             }}
           >
