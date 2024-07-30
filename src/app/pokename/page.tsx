@@ -4,6 +4,7 @@ import BackendService from "@/backend/backendFunc";
 import { NameAndAPI, PokeInfo } from "@/backend/backendTypes";
 import Card from "@/components/card";
 import Pokeball from "@/components/pokeball";
+import { similarityPercentage } from "@/utilitiesFunc/utilitiesFuncs";
 import { faHome } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -947,7 +948,12 @@ export default function PokeName() {
                         allGuessablePokemon
                           .map((gp) => gp.name)
                           .includes(guessedPokemon[guessedPokemon.length - 1])
-                          ? "text-green-600"
+                          ? guessedPokemon[guessedPokemon.length - 1].indexOf(
+                              guessedPokemon[guessedPokemon.length - 1]
+                            ) ===
+                            guessedPokemon.length - 1
+                            ? "text-green-600"
+                            : "text-yellow-500"
                           : "text-red-600"
                       }`}
                     >
@@ -961,7 +967,12 @@ export default function PokeName() {
                       {allGuessablePokemon
                         .map((gp) => gp.name)
                         .includes(guessedPokemon[guessedPokemon.length - 1])
-                        ? "found"
+                        ? guessedPokemon[guessedPokemon.length - 1].indexOf(
+                            guessedPokemon[guessedPokemon.length - 1]
+                          ) ===
+                          guessedPokemon.length - 1
+                          ? "found"
+                          : "was already found"
                         : "not found"}
                     </div>
                   )}
@@ -984,11 +995,38 @@ export default function PokeName() {
                           "guessPokemonInput"
                         ) as any;
 
-                        newGuessedPokemon.push(
-                          inputGuessValue.value
-                            .replaceAll(" ", "-")
-                            .toLowerCase()
-                        );
+                        let guessedPokemonLowerCase = inputGuessValue.value
+                          .replaceAll(" ", "-")
+                          .toLowerCase();
+
+                        let similarPokemon =
+                          allGuessablePokemon
+                            .map((pokemon) => pokemon.name)
+                            .find(
+                              (pokeName) => pokeName === guessedPokemonLowerCase
+                            ) ?? "";
+
+                        if (!similarPokemon) {
+                          allGuessablePokemon
+                            .map((pokemon) => pokemon.name)
+                            .forEach((pokemon) => {
+                              if (
+                                similarityPercentage(
+                                  pokemon,
+                                  guessedPokemonLowerCase
+                                ) >= 80 &&
+                                !similarPokemon
+                              ) {
+                                similarPokemon = pokemon;
+                              }
+                            });
+                        }
+
+                        if (!similarPokemon) {
+                          similarPokemon = guessedPokemonLowerCase;
+                        }
+
+                        newGuessedPokemon.push(similarPokemon);
                         inputGuessValue.value = "";
                         inputGuessValue.focus();
 
