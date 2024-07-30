@@ -169,7 +169,7 @@ export default function Pokedex() {
         {!loading ? (
           <div>
             <div className="my-10 grid grid-cols-12">
-              <div className="col-span-full mb-4">
+              <div className="col-span-full mb-4 relative">
                 <div className="font-semibold text-lg">Filter by name</div>
                 <input
                   className="w-[210px] outline-none"
@@ -197,7 +197,7 @@ export default function Pokedex() {
                   }}
                 />
                 {similarNamesPokemon.length > 0 && (
-                  <div className="bg-white rounded-3xl shadow-lg border py-2 max-w-64">
+                  <div className="absolute bg-white rounded-3xl shadow-lg border py-2 w-64 top-14 z-10">
                     {similarNamesPokemon.map((name) => (
                       <button
                         key={name}
