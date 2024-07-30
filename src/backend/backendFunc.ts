@@ -51,14 +51,19 @@ const BackendService = {
       "GET"
     ).then(async (pokeAdvancedInfo: PokeInfo) => {
       const res = { ...pokeAdvancedInfo };
-      res.pokeImg = `https://img.pokemondb.net/sprites/home/normal/${res.name}.png`;
-      if (pokeAdvancedInfo?.name) {
+      if (res?.name) {
         return await authHttpCall(
           `https://pokeapi.co/api/v2/pokemon/${pokeId}`,
           "GET"
-        ).then(async (pokeType) => {
-          if (pokeType?.types) {
-            res.types = pokeType.types;
+        ).then(async (pokeSimpleInfo) => {
+          if (pokeSimpleInfo?.types) {
+            res.types = pokeSimpleInfo.types;
+          }
+          if (pokeSimpleInfo?.sprites?.front_default) {
+            res.pokeImg = pokeSimpleInfo.sprites.front_default;
+          }
+          if (pokeSimpleInfo?.sprites?.front_shiny) {
+            res.pokeShinyImg = pokeSimpleInfo.sprites.front_shiny;
           }
 
           if (res?.evolution_chain?.url) {

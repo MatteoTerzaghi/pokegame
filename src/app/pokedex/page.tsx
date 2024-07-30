@@ -17,6 +17,8 @@ export default function Pokedex() {
   const [pokemonName, changePokemonName] = useState("");
   const [gen, changeGen] = useState(0);
 
+  const [hoveredPokemonName, changeHoveredPokemonName] = useState("");
+
   const [loading, changeLoading] = useState(true);
 
   const [allPokemon, changeAllPokemon] = useState<
@@ -409,9 +411,27 @@ export default function Pokedex() {
             </div>
             <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-1">
               {filteredPokemon.map((pokemon) => (
-                <div className="col-span-1 my-10 text-center" key={pokemon.id}>
+                <div
+                  className="col-span-1 my-10 text-center relative"
+                  key={pokemon.id}
+                  onMouseEnter={() => changeHoveredPokemonName(pokemon.name)}
+                  onMouseLeave={() => changeHoveredPokemonName("")}
+                >
+                  {hoveredPokemonName === pokemon.name && (
+                    <Image
+                      alt="shiny particles"
+                      src="/shiny_particles.png"
+                      className="top-0 right-0 absolute"
+                      width={50}
+                      height={50}
+                    />
+                  )}
                   <Image
-                    src={`https://img.pokemondb.net/sprites/home/normal/${pokemon.name}.png`}
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                      hoveredPokemonName === pokemon.name
+                        ? `shiny/${pokemon.id}`
+                        : `${pokemon.id}`
+                    }.png`}
                     alt={`${pokemon.name} Image`}
                     className="m-auto"
                     width={150}

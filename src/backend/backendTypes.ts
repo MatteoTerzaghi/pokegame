@@ -110,6 +110,7 @@ export interface PokeInfo extends BaseResponse {
   evolutionStage: number;
 
   pokeImg: string;
+  pokeShinyImg: string;
 
   // growth_rate: {
   //   name: "medium";
