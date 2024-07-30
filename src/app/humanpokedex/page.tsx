@@ -192,6 +192,16 @@ export default function HumanPokedex() {
           <div>
             {!loading ? (
               <div className="grid grid-cols-12">
+                <div className="col-span-full mb-4 text-center flex justify-center items-center">
+                  <div className="relative h-[320px] w-[320px]">
+                    <Image
+                      src={pokemon?.pokeImg ?? ""}
+                      alt="Mysterious pokemon image"
+                      fill
+                      sizes="min-width: 320px"
+                    />
+                  </div>
+                </div>
                 <div className="sm:col-span-8 col-span-12 pb-6 md:px-6">
                   <div className="mb-4 h-[88px]">
                     <span className="font-bold text-lg">
