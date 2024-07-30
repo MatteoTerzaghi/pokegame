@@ -18,6 +18,8 @@ export default function Pokedex() {
   const [pokemonName, changePokemonName] = useState("");
   const [gen, changeGen] = useState(0);
 
+  const [showTypesDropdown, changeShowTypesDropdown] = useState(0); //0 dont show 1 show first type dropdown 2 second
+
   const [hoveredPokemonName, changeHoveredPokemonName] = useState("");
 
   const [loading, changeLoading] = useState(true);
@@ -49,10 +51,14 @@ export default function Pokedex() {
 
         (document.getElementById("pokemonNameSrc") as any).value = "";
       }
+
+      if (ev.target.id !== "typePicker" && showTypesDropdown > 0) {
+        changeShowTypesDropdown(0);
+      }
     }
     window.addEventListener("click", onClickFunc);
     return () => window.removeEventListener("click", onClickFunc);
-  }, [similarNamesPokemon]);
+  }, [similarNamesPokemon, showTypesDropdown]);
 
   useEffect(() => {
     const fetchAllPokemonAndTypes = async () => {
@@ -256,82 +262,354 @@ export default function Pokedex() {
               </div>
               <div className="col-span-full mb-4">
                 <div className="font-semibold text-lg">Filter by types</div>
-                <div className="flex">
-                  <select
-                    name="typeOne"
-                    id="typeOne"
-                    className="outline-none block w-48 my-1"
-                    defaultValue={typeOne}
-                    onChange={(e) => {
-                      if (e.target.value === "" && typeTwo) {
-                        (document.getElementById("typeTwo") as any).value = "";
-                        changeTypeTwo("");
-                      }
-                      changeTypeOne(e.target.value);
-                    }}
+                <div className="flex relative">
+                  <button
+                    id="typePicker"
+                    className="capitalize w-40 text-start"
+                    onClick={() => changeShowTypesDropdown(1)}
                   >
-                    <option value={""}>Any Type</option>
-                    <option disabled={typeTwo === "normal"} value={"normal"}>
-                      Normal
-                    </option>
-                    <option disabled={typeTwo === "fire"} value={"fire"}>
-                      Fire
-                    </option>
-                    <option disabled={typeTwo === "water"} value={"water"}>
-                      Water
-                    </option>
-                    <option disabled={typeTwo === "grass"} value={"grass"}>
-                      Grass
-                    </option>
-                    <option disabled={typeTwo === "flying"} value={"flying"}>
-                      Flying
-                    </option>
-                    <option
-                      disabled={typeTwo === "fighting"}
-                      value={"fighting"}
-                    >
-                      Fighting
-                    </option>
-                    <option disabled={typeTwo === "poison"} value={"poison"}>
-                      Poison
-                    </option>
-                    <option
-                      disabled={typeTwo === "electric"}
-                      value={"electric"}
-                    >
-                      Electric
-                    </option>
-                    <option disabled={typeTwo === "ground"} value={"ground"}>
-                      Ground
-                    </option>
-                    <option disabled={typeTwo === "rock"} value={"rock"}>
-                      Rock
-                    </option>
-                    <option disabled={typeTwo === "psychic"} value={"psychic"}>
-                      Psychic
-                    </option>
-                    <option disabled={typeTwo === "ice"} value={"ice"}>
-                      Ice
-                    </option>
-                    <option disabled={typeTwo === "bug"} value={"bug"}>
-                      Bug
-                    </option>
-                    <option disabled={typeTwo === "ghost"} value={"ghost"}>
-                      Ghost
-                    </option>
-                    <option disabled={typeTwo === "steel"} value={"steel"}>
-                      Steel
-                    </option>
-                    <option disabled={typeTwo === "dragon"} value={"dragon"}>
-                      Dragon
-                    </option>
-                    <option disabled={typeTwo === "dark"} value={"dark"}>
-                      Dark
-                    </option>
-                    <option disabled={typeTwo === "fairy"} value={"fairy"}>
-                      Fairy
-                    </option>
-                  </select>
+                    {typeOne === "" ? "Any Type" : typeOne}
+                  </button>
+
+                  {showTypesDropdown === 1 && (
+                    <div className="absolute grid grid-cols-3 -top-10 w-[280px] bg-white z-10 rounded-3xl shadow-lg border text-sm py-2 px-3">
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={typeOne === ""}
+                        onClick={() => {
+                          changeTypeOne("");
+                          changeTypeTwo("");
+                        }}
+                      >
+                        Any Type
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("normal")}
+                        onClick={() => changeTypeOne("normal")}
+                      >
+                        <Image
+                          src="/types/normal_logo.webp"
+                          alt="Normal Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("normal")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Normal
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("fire")}
+                        onClick={() => changeTypeOne("fire")}
+                      >
+                        <Image
+                          src="/types/fire_logo.webp"
+                          alt="Fire Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("fire")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Fire
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("water")}
+                        onClick={() => changeTypeOne("water")}
+                      >
+                        <Image
+                          src="/types/water_logo.webp"
+                          alt="Water Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("water")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Water
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("grass")}
+                        onClick={() => changeTypeOne("grass")}
+                      >
+                        <Image
+                          src="/types/grass_logo.webp"
+                          alt="Grass Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("grass")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Grass
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("flying")}
+                        onClick={() => changeTypeOne("flying")}
+                      >
+                        <Image
+                          src="/types/flying_logo.webp"
+                          alt="Flying Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("flying")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Flying
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("fighting")}
+                        onClick={() => changeTypeOne("fighting")}
+                      >
+                        <Image
+                          src="/types/fighting_logo.webp"
+                          alt="Fighting Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("fighting")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Fighting
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("poison")}
+                        onClick={() => changeTypeOne("poison")}
+                      >
+                        <Image
+                          src="/types/poison_logo.webp"
+                          alt="Poison Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("poison")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Poison
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("electric")}
+                        onClick={() => changeTypeOne("electric")}
+                      >
+                        <Image
+                          src="/types/electric_logo.webp"
+                          alt="Electric Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("electric")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Electric
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("ground")}
+                        onClick={() => changeTypeOne("ground")}
+                      >
+                        <Image
+                          src="/types/ground_logo.webp"
+                          alt="Ground Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("ground")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Ground
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("rock")}
+                        onClick={() => changeTypeOne("rock")}
+                      >
+                        <Image
+                          src="/types/rock_logo.webp"
+                          alt="Rock Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("rock")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Rock
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("psychic")}
+                        onClick={() => changeTypeOne("psychic")}
+                      >
+                        <Image
+                          src="/types/psychic_logo.webp"
+                          alt="Psychic Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("psychic")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Psychic
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("ice")}
+                        onClick={() => changeTypeOne("ice")}
+                      >
+                        <Image
+                          src="/types/ice_logo.webp"
+                          alt="Ice Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("ice")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Ice
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("bug")}
+                        onClick={() => changeTypeOne("bug")}
+                      >
+                        <Image
+                          src="/types/bug_logo.webp"
+                          alt="Bug Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("bug")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Bug
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("ghost")}
+                        onClick={() => changeTypeOne("ghost")}
+                      >
+                        <Image
+                          src="/types/ghost_logo.webp"
+                          alt="Ghost Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("ghost")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Ghost
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("steel")}
+                        onClick={() => changeTypeOne("steel")}
+                      >
+                        <Image
+                          src="/types/steel_logo.webp"
+                          alt="Steel Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("steel")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Steel
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("dragon")}
+                        onClick={() => changeTypeOne("dragon")}
+                      >
+                        <Image
+                          src="/types/dragon_logo.webp"
+                          alt="Dragon Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("dragon")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Dragon
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("dark")}
+                        onClick={() => changeTypeOne("dark")}
+                      >
+                        <Image
+                          src="/types/dark_logo.webp"
+                          alt="Dark Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("dark")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Dark
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("fairy")}
+                        onClick={() => changeTypeOne("fairy")}
+                      >
+                        <Image
+                          src="/types/fairy_logo.webp"
+                          alt="Fairy Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("fairy")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Fairy
+                      </button>
+                    </div>
+                  )}
+
                   {typeOne && (
                     <div
                       className="w-[75px] h-[28.5px] relative mx-2"
@@ -346,78 +624,366 @@ export default function Pokedex() {
                     </div>
                   )}
                 </div>
-                <div className="flex">
-                  <select
-                    name="typeTwo"
-                    id="typeTwo"
-                    className="outline-none block w-48 my-1"
-                    defaultValue={typeTwo}
-                    disabled={!typeOne}
-                    onChange={(e) => changeTypeTwo(e.target.value)}
+                <div className="flex relative">
+                  <button
+                    id="typePicker"
+                    className="capitalize w-40 text-start"
+                    onClick={() => changeShowTypesDropdown(2)}
                   >
-                    <option value={""}>Any Type</option>
-                    <option value={"no_second_type"}>Has Only One Type</option>
-                    <option disabled={typeOne === "normal"} value={"normal"}>
-                      Normal
-                    </option>
-                    <option disabled={typeOne === "fire"} value={"fire"}>
-                      Fire
-                    </option>
-                    <option disabled={typeOne === "water"} value={"water"}>
-                      Water
-                    </option>
-                    <option disabled={typeOne === "grass"} value={"grass"}>
-                      Grass
-                    </option>
-                    <option disabled={typeOne === "flying"} value={"flying"}>
-                      Flying
-                    </option>
-                    <option
-                      disabled={typeOne === "fighting"}
-                      value={"fighting"}
-                    >
-                      Fighting
-                    </option>
-                    <option disabled={typeOne === "poison"} value={"poison"}>
-                      Poison
-                    </option>
-                    <option
-                      disabled={typeOne === "electric"}
-                      value={"electric"}
-                    >
-                      Electric
-                    </option>
-                    <option disabled={typeOne === "ground"} value={"ground"}>
-                      Ground
-                    </option>
-                    <option disabled={typeOne === "rock"} value={"rock"}>
-                      Rock
-                    </option>
-                    <option disabled={typeOne === "psychic"} value={"psychic"}>
-                      Psychic
-                    </option>
-                    <option disabled={typeOne === "ice"} value={"ice"}>
-                      Ice
-                    </option>
-                    <option disabled={typeOne === "bug"} value={"bug"}>
-                      Bug
-                    </option>
-                    <option disabled={typeOne === "ghost"} value={"ghost"}>
-                      Ghost
-                    </option>
-                    <option disabled={typeOne === "steel"} value={"steel"}>
-                      Steel
-                    </option>
-                    <option disabled={typeOne === "dragon"} value={"dragon"}>
-                      Dragon
-                    </option>
-                    <option disabled={typeOne === "dark"} value={"dark"}>
-                      Dark
-                    </option>
-                    <option disabled={typeOne === "fairy"} value={"fairy"}>
-                      Fairy
-                    </option>
-                  </select>
+                    {typeTwo === "" || typeTwo === "no_second_type"
+                      ? typeTwo === ""
+                        ? "Any Type"
+                        : "Has Only One Type"
+                      : typeTwo}
+                  </button>
+
+                  {showTypesDropdown === 2 && (
+                    <div className="absolute grid grid-cols-3 -top-10 w-[280px] bg-white z-10 rounded-3xl shadow-lg border text-sm py-2 px-3">
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={typeTwo === ""}
+                        onClick={() => {
+                          changeTypeTwo("");
+                        }}
+                      >
+                        Any Type
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={typeTwo === "no_second_type"}
+                        onClick={() => {
+                          changeTypeTwo("no_second_type");
+                        }}
+                      >
+                        Has Only One Type
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("normal")}
+                        onClick={() => changeTypeTwo("normal")}
+                      >
+                        <Image
+                          src="/types/normal_logo.webp"
+                          alt="Normal Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("normal")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Normal
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("fire")}
+                        onClick={() => changeTypeTwo("fire")}
+                      >
+                        <Image
+                          src="/types/fire_logo.webp"
+                          alt="Fire Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("fire")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Fire
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("water")}
+                        onClick={() => changeTypeTwo("water")}
+                      >
+                        <Image
+                          src="/types/water_logo.webp"
+                          alt="Water Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("water")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Water
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("grass")}
+                        onClick={() => changeTypeTwo("grass")}
+                      >
+                        <Image
+                          src="/types/grass_logo.webp"
+                          alt="Grass Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("grass")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Grass
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("flying")}
+                        onClick={() => changeTypeTwo("flying")}
+                      >
+                        <Image
+                          src="/types/flying_logo.webp"
+                          alt="Flying Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("flying")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Flying
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("fighting")}
+                        onClick={() => changeTypeTwo("fighting")}
+                      >
+                        <Image
+                          src="/types/fighting_logo.webp"
+                          alt="Fighting Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("fighting")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Fighting
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("poison")}
+                        onClick={() => changeTypeTwo("poison")}
+                      >
+                        <Image
+                          src="/types/poison_logo.webp"
+                          alt="Poison Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("poison")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Poison
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("electric")}
+                        onClick={() => changeTypeTwo("electric")}
+                      >
+                        <Image
+                          src="/types/electric_logo.webp"
+                          alt="Electric Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("electric")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Electric
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("ground")}
+                        onClick={() => changeTypeTwo("ground")}
+                      >
+                        <Image
+                          src="/types/ground_logo.webp"
+                          alt="Ground Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("ground")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Ground
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("rock")}
+                        onClick={() => changeTypeTwo("rock")}
+                      >
+                        <Image
+                          src="/types/rock_logo.webp"
+                          alt="Rock Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("rock")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Rock
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("psychic")}
+                        onClick={() => changeTypeTwo("psychic")}
+                      >
+                        <Image
+                          src="/types/psychic_logo.webp"
+                          alt="Psychic Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("psychic")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Psychic
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("ice")}
+                        onClick={() => changeTypeTwo("ice")}
+                      >
+                        <Image
+                          src="/types/ice_logo.webp"
+                          alt="Ice Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("ice")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Ice
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("bug")}
+                        onClick={() => changeTypeTwo("bug")}
+                      >
+                        <Image
+                          src="/types/bug_logo.webp"
+                          alt="Bug Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("bug")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Bug
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("ghost")}
+                        onClick={() => changeTypeTwo("ghost")}
+                      >
+                        <Image
+                          src="/types/ghost_logo.webp"
+                          alt="Ghost Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("ghost")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Ghost
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("steel")}
+                        onClick={() => changeTypeTwo("steel")}
+                      >
+                        <Image
+                          src="/types/steel_logo.webp"
+                          alt="Steel Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("steel")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Steel
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("dragon")}
+                        onClick={() => changeTypeTwo("dragon")}
+                      >
+                        <Image
+                          src="/types/dragon_logo.webp"
+                          alt="Dragon Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("dragon")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Dragon
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("dark")}
+                        onClick={() => changeTypeTwo("dark")}
+                      >
+                        <Image
+                          src="/types/dark_logo.webp"
+                          alt="Dark Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("dark")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Dark
+                      </button>
+                      <button
+                        className="col-auto flex items-center py-1 disabled:text-gray-400 w-full"
+                        disabled={[typeOne, typeTwo].includes("fairy")}
+                        onClick={() => changeTypeTwo("fairy")}
+                      >
+                        <Image
+                          src="/types/fairy_logo.webp"
+                          alt="Fairy Icon"
+                          width={20}
+                          height={20}
+                          className={`me-1 ${
+                            [typeOne, typeTwo].includes("fairy")
+                              ? "grayscale"
+                              : ""
+                          }`}
+                        />
+                        Fairy
+                      </button>
+                    </div>
+                  )}
+
                   {typeTwo && typeTwo !== "no_second_type" && (
                     <div
                       className="w-[75px] h-[28.5px] relative mx-2"
