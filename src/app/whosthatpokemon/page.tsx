@@ -143,6 +143,11 @@ export default function WhoIsThatPokemon() {
                                   .toLowerCase() ?? ""
                               ) >= 80
                             ) {
+                              changeNameGuessed(
+                                pokemon?.name
+                                  .replaceAll("-", " ")
+                                  .toLowerCase() ?? ""
+                              );
                               const newCurrentStreak = currentStreak + 1;
                               changeCurrentStreak(newCurrentStreak);
                               if (newCurrentStreak > bestStreak) {
