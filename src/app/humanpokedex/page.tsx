@@ -82,16 +82,16 @@ export default function HumanPokedex() {
         (pokedex) => pokedex.pokedex.name === "national"
       )?.entry_number ?? 0;
 
-    const errorPerc = Math.floor(
-      Math.abs(nationalPokedexNumber - pokeNumber) / 100
-    );
-
     const natPokedexPoints =
       pokeNumber === nationalPokedexNumber
         ? 500
-        : errorPerc >= 0 && errorPerc < 5
-        ? 400 - 100 * errorPerc
-        : 0;
+        : 401 -
+          (Math.abs(pokeNumber - nationalPokedexNumber) > 401
+            ? 401
+            : Math.abs(pokeNumber - nationalPokedexNumber));
+    //   : errorPerc >= 0 && errorPerc < 5
+    //   ? 400 - 100 * errorPerc
+    //   : 0;
 
     for_how_many_points +=
       (pokemon?.generation.name === gen ? 300 : 0) +
