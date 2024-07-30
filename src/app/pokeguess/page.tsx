@@ -4,6 +4,7 @@ import BackendService from "@/backend/backendFunc";
 import { PokeInfo } from "@/backend/backendTypes";
 import Card from "@/components/card";
 import Pokeball from "@/components/pokeball";
+import { similarityPercentage } from "@/utilitiesFunc/utilitiesFuncs";
 import { faHome } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -73,10 +74,38 @@ export default function PokeGuess() {
       (unlockedEvStage ? 100 : 0) -
       (unlockedNatPokedex ? 100 : 0);
 
+    const guessedPokemonLowerCase = pokeGuess
+      .toLowerCase()
+      .replaceAll(" ", "-");
+
+    let similarPokemon =
+      pokemon?.names
+        .map((name) => name.name.toLowerCase())
+        .find((name) => name === guessedPokemonLowerCase) ?? "";
+
+    if (!similarPokemon) {
+      pokemon?.names
+        .map((name) => name.name.toLowerCase())
+        .forEach((pokemon) => {
+          if (
+            similarityPercentage(pokemon, guessedPokemonLowerCase) >= 80 &&
+            !similarPokemon
+          ) {
+            similarPokemon = pokemon;
+          }
+        });
+    }
+
+    if (!similarPokemon) {
+      similarPokemon = guessedPokemonLowerCase;
+    }
+
+    changePokeGuess(similarPokemon);
+
     if (
       pokemon?.names
         .map((name) => name.name.toLowerCase())
-        .includes(pokeGuess.toLowerCase().replaceAll(" ", "-"))
+        .includes(similarPokemon)
     ) {
       changeScore(score + for_how_many_points);
       changeShowBanner(2);
@@ -94,7 +123,7 @@ export default function PokeGuess() {
   }
 
   return (
-    <div className="grid grid-cols-12 pt-20">
+    <div className="grid grid-cols-12 py-20">
       {showResult ? (
         <Card>
           <div className="flex justify-between items-center mb-8">
@@ -293,6 +322,7 @@ export default function PokeGuess() {
                       <Image
                         src={pokemon?.pokeImg ?? ""}
                         alt={`${pokemon?.name} image`}
+                        sizes="min-width: 276px"
                         fill
                       />
                     </div>

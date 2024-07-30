@@ -137,7 +137,7 @@ export default function Pokedex() {
   }
 
   return (
-    <div className="grid grid-cols-12 pt-20">
+    <div className="grid grid-cols-12 py-20">
       <Card>
         <div className="flex justify-between items-center">
           <span className="font-semibold pokeTitle text-5xl">PokeDex</span>

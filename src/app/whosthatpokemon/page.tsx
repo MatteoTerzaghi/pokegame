@@ -48,7 +48,7 @@ export default function WhoIsThatPokemon() {
   }, []);
 
   return (
-    <div className="grid grid-cols-12 pt-20">
+    <div className="grid grid-cols-12 py-20">
       <Card>
         <div className="flex justify-between items-center">
           <div className="font-semibold text-3xl">
@@ -80,6 +80,8 @@ export default function WhoIsThatPokemon() {
                     src={pokemon?.pokeImg ?? ""}
                     alt="Mysterious pokemon shape"
                     fill
+                    sizes="min-width: 420px"
+                    priority
                     className={showNextBtn ? "" : "brightness-0"}
                   />
                 </div>

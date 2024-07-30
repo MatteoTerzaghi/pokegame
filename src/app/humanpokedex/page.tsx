@@ -107,7 +107,7 @@ export default function HumanPokedex() {
   }
 
   return (
-    <div className="grid grid-cols-12 pt-20">
+    <div className="grid grid-cols-12 py-20">
       {showResult ? (
         <Card>
           <div className="flex justify-between items-center mb-8">

@@ -3,7 +3,7 @@ import Pokeball from "@/components/pokeball";
 
 export default function Home() {
   return (
-    <main className="grid grid-cols-12 pt-20">
+    <main className="grid grid-cols-12 py-20">
       <Card>
         <div className="font-semibold text-3xl">
           Welcome to <span className="pokeTitle text-5xl">PokeGame</span>
