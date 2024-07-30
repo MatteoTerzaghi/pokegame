@@ -3,11 +3,12 @@
 import BackendService from "@/backend/backendFunc";
 import Card from "@/components/card";
 import Pokeball from "@/components/pokeball";
+import { similarityPercentage } from "@/utilitiesFunc/utilitiesFuncs";
 import { faHome } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 export default function Pokedex() {
   const howManyPokemon = 1025;
@@ -36,6 +37,22 @@ export default function Pokedex() {
       types: string[];
     }[]
   >([]);
+
+  const [similarNamesPokemon, changeSimilarNamesPokemon] = useState<string[]>(
+    []
+  );
+
+  useLayoutEffect(() => {
+    function onClickFunc(ev: any) {
+      if (ev.target.id !== "pokemonChoice" && similarNamesPokemon.length > 0) {
+        changeSimilarNamesPokemon([]);
+
+        (document.getElementById("pokemonNameSrc") as any).value = "";
+      }
+    }
+    window.addEventListener("click", onClickFunc);
+    return () => window.removeEventListener("click", onClickFunc);
+  }, [similarNamesPokemon]);
 
   useEffect(() => {
     const fetchAllPokemonAndTypes = async () => {
@@ -92,6 +109,7 @@ export default function Pokedex() {
 
   async function filterPokemons() {
     changeLoading(true);
+
     let newFilteredPokemon = [...allPokemon];
 
     if (pokemonName) {
@@ -159,11 +177,82 @@ export default function Pokedex() {
                   type="text"
                   placeholder="Search the pokemon name"
                   onChange={(e) => {
-                    changePokemonName(
-                      e.target.value.replaceAll(" ", "-").toLowerCase()
-                    );
+                    const insertString = e.target.value
+                      .replaceAll(" ", "-")
+                      .toLowerCase();
+                    const newSimilarPokemon: string[] = [];
+                    allPokemon
+                      .map((pokemon) => pokemon.name)
+                      .forEach((pokeName) => {
+                        if (
+                          newSimilarPokemon.length <= 5 &&
+                          (similarityPercentage(pokeName, insertString) >= 50 ||
+                            pokeName.includes(insertString))
+                        ) {
+                          newSimilarPokemon.push(pokeName);
+                        }
+                      });
+                    changeSimilarNamesPokemon(newSimilarPokemon);
+                    changePokemonName(insertString);
                   }}
                 />
+                {similarNamesPokemon.length > 0 && (
+                  <div className="bg-white rounded-3xl shadow-lg border py-2 max-w-64">
+                    {similarNamesPokemon.map((name) => (
+                      <button
+                        key={name}
+                        className="capitalize block px-5 py-2"
+                        id="pokemonChoice"
+                        onClick={() => {
+                          if (typeOne) {
+                            (document.getElementById("typeOne") as any).value =
+                              "";
+                            changeTypeOne("");
+                          }
+
+                          if (typeTwo) {
+                            (document.getElementById("typeTwo") as any).value =
+                              "";
+                            changeTypeTwo("");
+                          }
+
+                          if (gen) {
+                            (
+                              document.getElementById("generationPicker") as any
+                            ).value = 0;
+                            changeGen(0);
+                          }
+
+                          if (pokemonName) {
+                            (
+                              document.getElementById("pokemonNameSrc") as any
+                            ).value = "";
+                            changePokemonName("");
+                          }
+
+                          const newFilteredArray: {
+                            id: string;
+                            name: string;
+                            types: string[];
+                          }[] = [];
+
+                          const thatPokemon = allPokemon.find(
+                            (pokemon) => pokemon.name === name
+                          );
+
+                          if (thatPokemon) {
+                            newFilteredArray.push(thatPokemon);
+                          }
+
+                          changeFilteredPokemon(newFilteredArray);
+                          changeSimilarNamesPokemon([]);
+                        }}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="col-span-full mb-4">
                 <div className="font-semibold text-lg">Filter by types</div>
