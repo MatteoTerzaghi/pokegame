@@ -4,7 +4,7 @@ import BackendService from "@/backend/backendFunc";
 import Card from "@/components/card";
 import Pokeball from "@/components/pokeball";
 import { similarityPercentage } from "@/utilitiesFunc/utilitiesFuncs";
-import { faHome } from "@fortawesome/pro-solid-svg-icons";
+import { faChevronDown, faHome } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,7 +52,24 @@ export default function Pokedex() {
         (document.getElementById("pokemonNameSrc") as any).value = "";
       }
 
-      if (ev.target.id !== "typePicker" && showTypesDropdown > 0) {
+      let isATypePickerClick = ev.target.id === "typePicker";
+      let targetParent = ev.target.parentElement;
+
+      while (!isATypePickerClick) {
+        if (targetParent.nodeName === "BODY") {
+          break;
+        }
+
+        isATypePickerClick = targetParent.id === "typePicker";
+
+        if (!targetParent.parentElement) {
+          break;
+        }
+
+        targetParent = targetParent.parentElement;
+      }
+
+      if (!isATypePickerClick && showTypesDropdown > 0) {
         changeShowTypesDropdown(0);
       }
     }
@@ -265,10 +282,11 @@ export default function Pokedex() {
                 <div className="flex relative">
                   <button
                     id="typePicker"
-                    className="capitalize w-40 text-start"
+                    className="capitalize w-52 text-start flex justify-between items-center"
                     onClick={() => changeShowTypesDropdown(1)}
                   >
-                    {typeOne === "" ? "Any Type" : typeOne}
+                    <span>{typeOne === "" ? "Any Type" : typeOne}</span>
+                    <FontAwesomeIcon icon={faChevronDown} />
                   </button>
 
                   {showTypesDropdown === 1 && (
@@ -627,14 +645,19 @@ export default function Pokedex() {
                 <div className="flex relative">
                   <button
                     id="typePicker"
-                    className="capitalize w-40 text-start"
+                    className="capitalize w-52 text-start flex justify-between items-center disabled:text-gray-400"
+                    disabled={!typeOne}
                     onClick={() => changeShowTypesDropdown(2)}
                   >
-                    {typeTwo === "" || typeTwo === "no_second_type"
-                      ? typeTwo === ""
-                        ? "Any Type"
-                        : "Has Only One Type"
-                      : typeTwo}
+                    <span>
+                      {typeTwo === "" || typeTwo === "no_second_type"
+                        ? typeTwo === ""
+                          ? "Any Type"
+                          : "Has Only One Type"
+                        : typeTwo}
+                    </span>
+
+                    <FontAwesomeIcon icon={faChevronDown} />
                   </button>
 
                   {showTypesDropdown === 2 && (
