@@ -948,7 +948,7 @@ export default function PokeName() {
                         allGuessablePokemon
                           .map((gp) => gp.name)
                           .includes(guessedPokemon[guessedPokemon.length - 1])
-                          ? guessedPokemon[guessedPokemon.length - 1].indexOf(
+                          ? guessedPokemon.indexOf(
                               guessedPokemon[guessedPokemon.length - 1]
                             ) ===
                             guessedPokemon.length - 1
@@ -967,12 +967,12 @@ export default function PokeName() {
                       {allGuessablePokemon
                         .map((gp) => gp.name)
                         .includes(guessedPokemon[guessedPokemon.length - 1])
-                        ? guessedPokemon[guessedPokemon.length - 1].indexOf(
+                        ? guessedPokemon.indexOf(
                             guessedPokemon[guessedPokemon.length - 1]
                           ) ===
                           guessedPokemon.length - 1
                           ? "found"
-                          : "was already found"
+                          : "already found"
                         : "not found"}
                     </div>
                   )}
